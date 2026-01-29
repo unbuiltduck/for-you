@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A Special Message For You 💕</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 50%, #ff9a9e 100%);
+            font-family: 'Georgia', serif;
+            padding: 20px;
+            overflow: hidden;
+        }
+
+        .floating-hearts {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            overflow: hidden;
+            z-index: 0;
+        }
+
+        .heart {
+            position: absolute;
+            font-size: 20px;
+            animation: float 6s ease-in-out infinite;
+            opacity: 0.6;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+            10% { opacity: 0.6; }
+            90% { opacity: 0.6; }
+            100% { transform: translateY(-100px) rotate(360deg); opacity: 0; }
+        }
+
+        .container {
+            text-align: center;
+            z-index: 1;
+        }
+
+        h1 {
+            color: #c44569;
+            font-size: 2rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .subtitle {
+            color: #e17055;
+            font-size: 1.1rem;
+            margin-bottom: 30px;
+        }
+
+        .scratch-container {
+            position: relative;
+            width: 320px;
+            height: 200px;
+            margin: 0 auto 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(196, 69, 105, 0.3);
+            overflow: hidden;
+        }
+
+        .message-layer {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #fff5f5 0%, #ffe0e6 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .message-layer .big-heart {
+            font-size: 50px;
+            margin-bottom: 10px;
+            animation: pulse 1s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        .message-layer .question {
+            font-size: 1.4rem;
+            color: #c44569;
+            font-weight: bold;
+            line-height: 1.4;
+        }
+
+        #scratchCanvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            cursor: crosshair;
+            border-radius: 20px;
+        }
+
+        .hint {
+            color: #888;
+            font-size: 0.9rem;
+            font-style: italic;
+            margin-bottom: 20px;
+            transition: opacity 0.5s;
+        }
+
+        .response-buttons {
+            display: none;
+            gap: 20px;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .response-buttons.show {
+            display: flex;
+        }
+
+        .btn {
+            padding: 15px 40px;
+            font-size: 1.2rem;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            font-family: 'Georgia', serif;
+            transition: all 0.3s ease;
+        }
+
+        .btn-yes {
+            background: linear-gradient(135deg, #c44569 0%, #ff6b6b 100%);
+            color: white;
+            box-shadow: 0 5px 20px rgba(196, 69, 105, 0.4);
+        }
+
+        .btn-yes:hover {
+            transform: scale(1.1);
+            box-shadow: 0 8px 30px rgba(196, 69, 105, 0.6);
+        }
+
+        .btn-no {
+            background: #ddd;
+            color: #666;
+        }
+
+        .btn-no:hover {
+            transform: scale(0.9);
+        }
+
+        .celebration {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            z-index: 100;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .celebration.show {
+            display: flex;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .celebration h2 {
+            font-size: 3rem;
+            color: #c44569;
+            margin-bottom: 20px;
+        }
+
+        .celebration .hearts-explosion {
+            font-size: 4rem;
+            animation: bounce 0.5s ease infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+        }
+
+        .celebration p {
+            font-size: 1.5rem;
+            color: #e17055;
+            margin-top: 20px;
+        }
+
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background: #c44569;
+            animation: confetti-fall 3s ease-out forwards;
+        }
+
+        @keyframes confetti-fall {
+            0% { transform: translateY(-100px) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+    <div class="floating-hearts" id="floatingHearts"></div>
+    
+    <div class="container">
+        <h1>I Have Something Special For You</h1>
+        <p class="subtitle">✨ Scratch below to reveal your message ✨</p>
+        
+        <div class="scratch-container">
+            <div class="message-layer">
+                <div class="big-heart">💝</div>
+                <div class="question">Will you be my<br>Valentine?</div>
+            </div>
+            <canvas id="scratchCanvas"></canvas>
+        </div>
+        
+        <p class="hint" id="hint">Use your finger or mouse to scratch!</p>
+        
+        <div class="response-buttons" id="buttons">
+            <button class="btn btn-yes" onclick="sayYes()">Yes! 💕</button>
+            <button class="btn btn-no" onclick="moveButton(this)">No</button>
+        </div>
+    </div>
+
+    <div class="celebration" id="celebration">
+        <div class="hearts-explosion">💖💕💗💓💝</div>
+        <h2>Yay!!!</h2>
+        <p>You just made me the happiest person! 🥰</p>
+    </div>
+
+    <script>
+        // Create floating hearts background
+        const heartsContainer = document.getElementById('floatingHearts');
+        const heartEmojis = ['💕', '💗', '💖', '💓', '❤️', '🩷'];
+        
+        for (let i = 0; i < 15; i++) {
+            const heart = document.createElement('div');
+            heart.className = 'heart';
+            heart.textContent = heartEmojis[Math.floor(Math.random() * heartEmojis.length)];
+            heart.style.left = Math.random() * 100 + '%';
+            heart.style.animationDelay = Math.random() * 6 + 's';
+            heart.style.animationDuration = (5 + Math.random() * 3) + 's';
+            heartsContainer.appendChild(heart);
+        }
+
+        // Scratch card functionality
+        const canvas = document.getElementById('scratchCanvas');
+        const ctx = canvas.getContext('2d');
+        let isDrawing = false;
+        let scratchedPixels = 0;
+        let totalPixels = 0;
+        let revealed = false;
+
+        function initCanvas() {
+            const rect = canvas.getBoundingClientRect();
+            canvas.width = rect.width;
+            canvas.height = rect.height;
+            
+            // Create gradient scratch layer
+            const gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
+            gradient.addColorStop(0, '#c44569');
+            gradient.addColorStop(0.5, '#ff6b6b');
+            gradient.addColorStop(1, '#f8a5c2');
+            
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            // Add some sparkle pattern
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.3)';
+            for (let i = 0; i < 50; i++) {
+                ctx.beginPath();
+                ctx.arc(
+                    Math.random() * canvas.width,
+                    Math.random() * canvas.height,
+                    Math.random() * 3 + 1,
+                    0,
+                    Math.PI * 2
+                );
+                ctx.fill();
+            }
+            
+            // Add text
+            ctx.fillStyle = 'white';
+            ctx.font = 'bold 24px Georgia';
+            ctx.textAlign = 'center';
+            ctx.fillText('✨ Scratch Me! ✨', canvas.width / 2, canvas.height / 2);
+            
+            totalPixels = canvas.width * canvas.height;
+        }
+
+        function scratch(x, y) {
+            ctx.globalCompositeOperation = 'destination-out';
+            ctx.beginPath();
+            ctx.arc(x, y, 25, 0, Math.PI * 2);
+            ctx.fill();
+            
+            checkScratchProgress();
+        }
+
+        function checkScratchProgress() {
+            if (revealed) return;
+            
+            const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+            let transparent = 0;
+            
+            for (let i = 3; i < imageData.data.length; i += 4) {
+                if (imageData.data[i] === 0) transparent++;
+            }
+            
+            const percentScratched = (transparent / (canvas.width * canvas.height)) * 100;
+            
+            if (percentScratched > 50) {
+                revealed = true;
+                canvas.style.transition = 'opacity 0.5s';
+                canvas.style.opacity = '0';
+                document.getElementById('hint').style.opacity = '0';
+                document.getElementById('buttons').classList.add('show');
+            }
+        }
+
+        function getPos(e) {
+            const rect = canvas.getBoundingClientRect();
+            const x = (e.clientX || e.touches[0].clientX) - rect.left;
+            const y = (e.clientY || e.touches[0].clientY) - rect.top;
+            return { x, y };
+        }
+
+        canvas.addEventListener('mousedown', (e) => {
+            isDrawing = true;
+            const pos = getPos(e);
+            scratch(pos.x, pos.y);
+        });
+
+        canvas.addEventListener('mousemove', (e) => {
+            if (!isDrawing) return;
+            const pos = getPos(e);
+            scratch(pos.x, pos.y);
+        });
+
+        canvas.addEventListener('mouseup', () => isDrawing = false);
+        canvas.addEventListener('mouseleave', () => isDrawing = false);
+
+        // Touch events
+        canvas.addEventListener('touchstart', (e) => {
+            e.preventDefault();
+            isDrawing = true;
+            const pos = getPos(e);
+            scratch(pos.x, pos.y);
+        });
+
+        canvas.addEventListener('touchmove', (e) => {
+            e.preventDefault();
+            if (!isDrawing) return;
+            const pos = getPos(e);
+            scratch(pos.x, pos.y);
+        });
+
+        canvas.addEventListener('touchend', () => isDrawing = false);
+
+        // Button functions
+        function sayYes() {
+            const celebration = document.getElementById('celebration');
+            celebration.classList.add('show');
+            
+            // Create confetti
+            for (let i = 0; i < 100; i++) {
+                setTimeout(() => {
+                    const confetti = document.createElement('div');
+                    confetti.className = 'confetti';
+                    confetti.style.left = Math.random() * 100 + '%';
+                    confetti.style.background = ['#c44569', '#ff6b6b', '#f8a5c2', '#ffeaa7', '#fd79a8'][Math.floor(Math.random() * 5)];
+                    confetti.style.borderRadius = Math.random() > 0.5 ? '50%' : '0';
+                    celebration.appendChild(confetti);
+                }, i * 30);
+            }
+        }
+
+        function moveButton(btn) {
+            const x = Math.random() * (window.innerWidth - 100);
+            const y = Math.random() * (window.innerHeight - 50);
+            btn.style.position = 'fixed';
+            btn.style.left = x + 'px';
+            btn.style.top = y + 'px';
+            btn.style.zIndex = '10';
+        }
+
+        // Initialize
+        initCanvas();
+        window.addEventListener('resize', initCanvas);
+    </script>
+</body>
+</html>
