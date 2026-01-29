@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>A Special Message For You 💕</title>
+    <title>A Special Message 👀</title>
     <style>
         * {
             margin: 0;
@@ -17,8 +17,8 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 50%, #ff9a9e 100%);
-            font-family: 'Georgia', serif;
+            background: linear-gradient(135deg, #f5f5f0 0%, #e8e8e0 100%);
+            font-family: 'Courier New', monospace;
             padding: 20px;
             overflow: hidden;
         }
@@ -54,35 +54,35 @@
         }
 
         h1 {
-            color: #c44569;
-            font-size: 2rem;
-            margin-bottom: 10px;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+            color: #333;
+            font-size: 1.5rem;
+            margin-bottom: 5px;
         }
 
         .subtitle {
-            color: #e17055;
-            font-size: 1.1rem;
-            margin-bottom: 30px;
+            color: #888;
+            font-size: 0.9rem;
+            margin-bottom: 25px;
         }
 
         .scratch-container {
             position: relative;
             width: 320px;
-            height: 200px;
-            margin: 0 auto 30px;
-            border-radius: 20px;
-            box-shadow: 0 10px 40px rgba(196, 69, 105, 0.3);
+            height: 380px;
+            margin: 0 auto 25px;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.15);
             overflow: hidden;
+            background: white;
         }
 
-        .message-layer {
+        .eye-chart-layer {
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: linear-gradient(135deg, #fff5f5 0%, #ffe0e6 100%);
+            background: white;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -90,22 +90,36 @@
             padding: 20px;
         }
 
-        .message-layer .big-heart {
-            font-size: 50px;
-            margin-bottom: 10px;
-            animation: pulse 1s ease-in-out infinite;
+        .chart-header {
+            font-size: 0.7rem;
+            color: #999;
+            letter-spacing: 2px;
+            margin-bottom: 20px;
         }
 
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.1); }
+        .eye-chart {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
         }
 
-        .message-layer .question {
-            font-size: 1.4rem;
-            color: #c44569;
+        .chart-line {
             font-weight: bold;
-            line-height: 1.4;
+            color: #111;
+            letter-spacing: 6px;
+        }
+
+        .line-1 { font-size: 2.8rem; }
+        .line-2 { font-size: 2.2rem; }
+        .line-3 { font-size: 1.6rem; }
+        .line-4 { font-size: 1.4rem; }
+        .line-5 { font-size: 0.85rem; letter-spacing: 3px; }
+        .line-6 { font-size: 0.75rem; letter-spacing: 3px; color: #e94560; }
+
+        .heart-row {
+            margin-top: 15px;
+            font-size: 1.8rem;
         }
 
         #scratchCanvas {
@@ -115,47 +129,51 @@
             width: 100%;
             height: 100%;
             cursor: crosshair;
-            border-radius: 20px;
+            border-radius: 15px;
         }
 
         .hint {
             color: #888;
-            font-size: 0.9rem;
-            font-style: italic;
-            margin-bottom: 20px;
+            font-size: 0.85rem;
+            margin-bottom: 15px;
             transition: opacity 0.5s;
         }
 
         .response-buttons {
             display: none;
-            gap: 20px;
+            gap: 15px;
             justify-content: center;
-            margin-top: 20px;
+            margin-top: 15px;
         }
 
         .response-buttons.show {
             display: flex;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
         }
 
         .btn {
-            padding: 15px 40px;
-            font-size: 1.2rem;
+            padding: 12px 35px;
+            font-size: 1.1rem;
             border: none;
             border-radius: 50px;
             cursor: pointer;
-            font-family: 'Georgia', serif;
+            font-family: 'Courier New', monospace;
             transition: all 0.3s ease;
         }
 
         .btn-yes {
-            background: linear-gradient(135deg, #c44569 0%, #ff6b6b 100%);
+            background: linear-gradient(135deg, #e94560, #ff6b6b);
             color: white;
-            box-shadow: 0 5px 20px rgba(196, 69, 105, 0.4);
+            box-shadow: 0 5px 20px rgba(233, 69, 96, 0.3);
         }
 
         .btn-yes:hover {
             transform: scale(1.1);
-            box-shadow: 0 8px 30px rgba(196, 69, 105, 0.6);
         }
 
         .btn-no {
@@ -174,7 +192,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(255, 255, 255, 0.95);
+            background: rgba(255,255,255,0.98);
             z-index: 100;
             flex-direction: column;
             align-items: center;
@@ -186,38 +204,32 @@
             animation: fadeIn 0.5s ease;
         }
 
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-
         .celebration h2 {
-            font-size: 3rem;
-            color: #c44569;
-            margin-bottom: 20px;
-        }
-
-        .celebration .hearts-explosion {
-            font-size: 4rem;
-            animation: bounce 0.5s ease infinite;
-        }
-
-        @keyframes bounce {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.2); }
+            font-size: 2.5rem;
+            color: #e94560;
         }
 
         .celebration p {
-            font-size: 1.5rem;
-            color: #e17055;
-            margin-top: 20px;
+            font-size: 1.2rem;
+            color: #666;
+            margin-top: 10px;
+        }
+
+        .celebration .hearts {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            animation: pulse 0.6s ease infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
         }
 
         .confetti {
             position: absolute;
             width: 10px;
             height: 10px;
-            background: #c44569;
             animation: confetti-fall 3s ease-out forwards;
         }
 
@@ -225,25 +237,42 @@
             0% { transform: translateY(-100px) rotate(0deg); opacity: 1; }
             100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
         }
+
+        .read-hint {
+            font-size: 0.7rem;
+            color: #aaa;
+            margin-top: 15px;
+            font-style: italic;
+        }
     </style>
 </head>
 <body>
     <div class="floating-hearts" id="floatingHearts"></div>
     
     <div class="container">
-        <h1>I Have Something Special For You</h1>
-        <p class="subtitle">✨ Scratch below to reveal your message ✨</p>
-        
+        <h1>👀 You Have a Message</h1>
+        <p class="subtitle">Scratch to reveal your eye chart results</p>
+
         <div class="scratch-container">
-            <div class="message-layer">
-                <div class="big-heart">💝</div>
-                <div class="question">Will you be my<br>Valentine?</div>
+            <div class="eye-chart-layer">
+                <div class="chart-header">VISUAL MESSAGE TEST</div>
+                
+                <div class="eye-chart">
+                    <div class="chart-line line-1">W</div>
+                    <div class="chart-line line-2">I L L</div>
+                    <div class="chart-line line-3">Y O U  B E</div>
+                    <div class="chart-line line-4">M Y</div>
+                    <div class="chart-line line-5">V A L E N T I N E ?</div>
+                </div>
+
+                <div class="heart-row">💝</div>
+                <p class="read-hint">Read from top to bottom</p>
             </div>
             <canvas id="scratchCanvas"></canvas>
         </div>
-        
-        <p class="hint" id="hint">Use your finger or mouse to scratch!</p>
-        
+
+        <p class="hint" id="hint">☝️ Scratch with your finger or mouse</p>
+
         <div class="response-buttons" id="buttons">
             <button class="btn btn-yes" onclick="sayYes()">Yes! 💕</button>
             <button class="btn btn-no" onclick="moveButton(this)">No</button>
@@ -251,9 +280,9 @@
     </div>
 
     <div class="celebration" id="celebration">
-        <div class="hearts-explosion">💖💕💗💓💝</div>
-        <h2>Yay!!!</h2>
-        <p>You just made me the happiest person! 🥰</p>
+        <div class="hearts">💖👁️💖</div>
+        <h2>20/20 Decision</h2>
+        <p>Right there 💕</p>
     </div>
 
     <script>
@@ -271,31 +300,28 @@
             heartsContainer.appendChild(heart);
         }
 
-        // Scratch card functionality
         const canvas = document.getElementById('scratchCanvas');
         const ctx = canvas.getContext('2d');
         let isDrawing = false;
-        let scratchedPixels = 0;
-        let totalPixels = 0;
         let revealed = false;
 
         function initCanvas() {
             const rect = canvas.getBoundingClientRect();
             canvas.width = rect.width;
             canvas.height = rect.height;
-            
-            // Create gradient scratch layer
+
+            // Create a nice gradient scratch layer
             const gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
-            gradient.addColorStop(0, '#c44569');
+            gradient.addColorStop(0, '#e94560');
             gradient.addColorStop(0.5, '#ff6b6b');
             gradient.addColorStop(1, '#f8a5c2');
-            
+
             ctx.fillStyle = gradient;
             ctx.fillRect(0, 0, canvas.width, canvas.height);
-            
-            // Add some sparkle pattern
-            ctx.fillStyle = 'rgba(255, 255, 255, 0.3)';
-            for (let i = 0; i < 50; i++) {
+
+            // Add sparkle dots
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.4)';
+            for (let i = 0; i < 80; i++) {
                 ctx.beginPath();
                 ctx.arc(
                     Math.random() * canvas.width,
@@ -306,38 +332,38 @@
                 );
                 ctx.fill();
             }
-            
+
             // Add text
             ctx.fillStyle = 'white';
-            ctx.font = 'bold 24px Georgia';
+            ctx.font = 'bold 22px Courier New';
             ctx.textAlign = 'center';
-            ctx.fillText('✨ Scratch Me! ✨', canvas.width / 2, canvas.height / 2);
-            
-            totalPixels = canvas.width * canvas.height;
+            ctx.fillText('✨ SCRATCH HERE ✨', canvas.width / 2, canvas.height / 2 - 10);
+            ctx.font = '14px Courier New';
+            ctx.fillText('to see your results', canvas.width / 2, canvas.height / 2 + 15);
         }
 
         function scratch(x, y) {
             ctx.globalCompositeOperation = 'destination-out';
             ctx.beginPath();
-            ctx.arc(x, y, 25, 0, Math.PI * 2);
+            ctx.arc(x, y, 28, 0, Math.PI * 2);
             ctx.fill();
-            
-            checkScratchProgress();
+
+            checkProgress();
         }
 
-        function checkScratchProgress() {
+        function checkProgress() {
             if (revealed) return;
-            
+
             const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
             let transparent = 0;
-            
+
             for (let i = 3; i < imageData.data.length; i += 4) {
                 if (imageData.data[i] === 0) transparent++;
             }
-            
-            const percentScratched = (transparent / (canvas.width * canvas.height)) * 100;
-            
-            if (percentScratched > 50) {
+
+            const percent = (transparent / (canvas.width * canvas.height)) * 100;
+
+            if (percent > 45) {
                 revealed = true;
                 canvas.style.transition = 'opacity 0.5s';
                 canvas.style.opacity = '0';
@@ -353,6 +379,7 @@
             return { x, y };
         }
 
+        // Mouse events
         canvas.addEventListener('mousedown', (e) => {
             isDrawing = true;
             const pos = getPos(e);
@@ -385,18 +412,17 @@
 
         canvas.addEventListener('touchend', () => isDrawing = false);
 
-        // Button functions
         function sayYes() {
             const celebration = document.getElementById('celebration');
             celebration.classList.add('show');
-            
-            // Create confetti
+
+            const colors = ['#e94560', '#ff6b6b', '#f8a5c2', '#ffeaa7', '#fd79a8'];
             for (let i = 0; i < 100; i++) {
                 setTimeout(() => {
                     const confetti = document.createElement('div');
                     confetti.className = 'confetti';
                     confetti.style.left = Math.random() * 100 + '%';
-                    confetti.style.background = ['#c44569', '#ff6b6b', '#f8a5c2', '#ffeaa7', '#fd79a8'][Math.floor(Math.random() * 5)];
+                    confetti.style.background = colors[Math.floor(Math.random() * colors.length)];
                     confetti.style.borderRadius = Math.random() > 0.5 ? '50%' : '0';
                     celebration.appendChild(confetti);
                 }, i * 30);
@@ -412,7 +438,7 @@
             btn.style.zIndex = '10';
         }
 
-        // Initialize
+        // Init
         initCanvas();
         window.addEventListener('resize', initCanvas);
     </script>
